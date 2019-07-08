@@ -1,0 +1,42 @@
+﻿@using TestGat.Module
+@{
+    var root = (RootOwner)ViewBag.Root;
+
+    <table>
+        @foreach (var item in root.items)
+        {
+            <tr style="padding: 5px">
+                <td>
+                    @if (Session["Bookmark." + item.id] != null)
+                    {
+                        <span id="bm_@item.id">*</span>
+                    }
+                    else
+                    {
+                        <span id="bm_@item.id"></span>
+                    }
+                </td>
+                <td style="padding: 5px">
+                    <button onclick="bookmark(@item.id, '@ViewBag.Q')">bookmark</button>
+                </td>
+                <td style="padding: 5px">
+                    <img width="32" src="@item.owner.avatar_url"/>
+                </td>
+                <td style="padding: 5px">
+                    @item.name
+                </td>
+            </tr>
+        }
+    </table>
+}
+
+<script type="text/javascript">
+    function bookmark(id, q) {
+        console.log(id, q);
+        var oReq = new XMLHttpRequest();
+        oReq.open("GET", '/Home/Bookmark?q=' + q + '&id=' + id);
+        oReq.send();
+        document.getElementById('bm_' + id).innerHTML = '*';
+    }
+</script>
+
